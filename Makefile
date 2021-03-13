@@ -31,10 +31,20 @@ $(BIN)liblist.so: $(BIN)LinkedListAPI.o
 $(BIN)LinkedListAPI.o: $(SRC)LinkedListAPI.c $(INC)LinkedListAPI.h
 	$(CC) $(CFLAGS) -c -fpic -I$(INC) $(SRC)LinkedListAPI.c -o $(BIN)LinkedListAPI.o
 
+#$(BIN)A2: $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
+	#$(CC) $(CFLAGS) -o A2 $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
+
+$(BIN)A2: $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
+	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)A2 $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
+
 clean:
 	rm -rf $(BIN)StructListDemo $(BIN)xmlExample $(BIN)*.o $(BIN)*.so
 
 #This is the target for the in-class XML example
+A2: $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
+	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)A2 $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
+
+
 xmlExample: $(SRC)libXmlExample.c
 	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)xmlExample
 
@@ -45,6 +55,6 @@ StructListDemo: $(BIN)StructListDemo.o $(BIN)liblist.so
 	$(CC) $(CFLAGS) $(LDFLAGS) -L$(BIN) -o $(BIN)StructListDemo $(BIN)StructListDemo.o  -llist
 	
 $(BIN)StructListDemo.o: $(SRC)StructListDemo.c
-	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)StructListDemo.c -o $(BIN)StructListDemo.o
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)StructListDemo.c  -o $(BIN)StructListDemo.o
 
 ###################################################################################################
