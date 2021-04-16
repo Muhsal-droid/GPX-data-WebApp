@@ -2,5 +2,10 @@
 ######################
 .DS_Store
 .DS_Store?
-**/.DS_Store
-**/.DS_Store?
+*.o
+*.so
+*.DSYM
+test1*
+test2*
+mem*
+demo*
