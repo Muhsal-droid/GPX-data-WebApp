@@ -16,10 +16,10 @@ ifeq ($(UNAME), Darwin)
 	XML_PATH = /System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libxml2
 endif
 
-parser: $(BIN)libgpxparser.so
+parser: ../libgpxparser.so
 
-$(BIN)libgpxparser.so: $(PARSER_OBJ_FILES) $(BIN)LinkedListAPI.o
-	gcc -shared -o $(BIN)libgpxparser.so $(PARSER_OBJ_FILES) $(BIN)LinkedListAPI.o -lxml2 -lm
+../libgpxparser.so: $(PARSER_OBJ_FILES) $(BIN)LinkedListAPI.o
+	gcc -shared -o ../libgpxparser.so $(PARSER_OBJ_FILES) $(BIN)LinkedListAPI.o -lxml2 -lm
 
 #Compiles all files named GPX*.c in src/ into object files, places all coresponding GPX*.o files in bin/
 $(BIN)GPX%.o: $(SRC)GPX%.c $(INC)LinkedListAPI.h $(INC)GPX*.h
@@ -31,20 +31,11 @@ $(BIN)liblist.so: $(BIN)LinkedListAPI.o
 $(BIN)LinkedListAPI.o: $(SRC)LinkedListAPI.c $(INC)LinkedListAPI.h
 	$(CC) $(CFLAGS) -c -fpic -I$(INC) $(SRC)LinkedListAPI.c -o $(BIN)LinkedListAPI.o
 
-#$(BIN)A2: $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
-	#$(CC) $(CFLAGS) -o A2 $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
-
-$(BIN)A2: $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
-	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)A2 $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
-
 clean:
 	rm -rf $(BIN)StructListDemo $(BIN)xmlExample $(BIN)*.o $(BIN)*.so
 
+
 #This is the target for the in-class XML example
-A2: $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
-	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)A2 $(BIN)GPXA2.o $(BIN)GPXParser.o $(BIN)liblist.o $(BIN)LinkedListAPI.o
-
-
 xmlExample: $(SRC)libXmlExample.c
 	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)xmlExample
 
@@ -53,8 +44,8 @@ xmlExample: $(SRC)libXmlExample.c
 
 StructListDemo: $(BIN)StructListDemo.o $(BIN)liblist.so
 	$(CC) $(CFLAGS) $(LDFLAGS) -L$(BIN) -o $(BIN)StructListDemo $(BIN)StructListDemo.o  -llist
-	
+
 $(BIN)StructListDemo.o: $(SRC)StructListDemo.c
-	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)StructListDemo.c  -o $(BIN)StructListDemo.o
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)StructListDemo.c -o $(BIN)StructListDemo.o
 
 ###################################################################################################
